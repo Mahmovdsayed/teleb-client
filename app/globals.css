@@ -5,11 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans:
-    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-montserrat: var(--font-montserrat-family);
+  --font-cairo: var(--font-cairo-family);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -120,8 +117,20 @@
 }
 
 @layer base {
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 5px;
+  }
   * {
     @apply border-border outline-ring/50;
+    scrollbar-width: none;
+    scrollbar-color: var(--border) transparent;
   }
   body {
     @apply bg-background text-foreground;
@@ -131,6 +140,10 @@
     cursor: pointer;
   }
   html {
-    @apply font-sans;
+    font-family: var(--font-montserrat-family), sans-serif;
+  }
+
+  html[dir="rtl"] {
+    font-family: var(--font-cairo-family), sans-serif;
   }
 }

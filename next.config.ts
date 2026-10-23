@@ -1,7 +1,10 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from "next"
+import createNextIntlPlugin from "next-intl/plugin"
 
 const nextConfig: NextConfig = {
+  reactCompiler: true,
   experimental: {
+    turbopackRustReactCompiler: true,
     agentFeedback: true,
   },
   cacheComponents: true,
@@ -14,6 +17,7 @@ const nextConfig: NextConfig = {
       },
     },
   },
-};
+}
 
-export default nextConfig;
+const withNextIntl = createNextIntlPlugin("./i18n/request.ts")
+export default withNextIntl(nextConfig)
