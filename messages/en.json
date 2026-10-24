@@ -1,5 +1,24 @@
 {
   "homePage": {
     "title": "Home Page"
+  },
+  "footer": {
+    "home": "Home",
+    "about": "About Us",
+    "collections": "Collections",
+    "contact": "Contact",
+    "quickLinks": "Quick Links",
+    "categories": "Categories",
+    "bedroom": "Bedroom",
+    "livingRoom": "Living Room",
+    "outdoor": "Outdoor",
+    "office": "Office",
+    "contactUs": "Contact Us",
+    "address": "123 Furniture Street, Cairo, Egypt",
+    "brandDescription": "Premium furniture for modern living. We craft comfort and elegance for your home.",
+    "copyright": "© {year} Teleb Furniture. All rights reserved.",
+    "poweredBy": "Powered by Nest Studio",
+    "location": "Block no. 65, Zahraa Al-Maadi, Industrial Zone, Cairo, Egypt",
+    "logo": "Teleb Furniture"
   }
 }

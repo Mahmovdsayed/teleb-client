@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import Provider from "@/provider/Provider"
 import "../globals.css";
 import { Metadata } from "next"
+import Footer from "@/components/layout/Footer"
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -57,9 +58,10 @@ export default async function RootLayout({ children, params }: Props) {
       )}
     >
       <body>
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           <Provider>
             {children}
+            <Footer />
           </Provider>
         </NextIntlClientProvider>
       </body>
