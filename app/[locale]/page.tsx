@@ -1,11 +1,10 @@
+import HomePage from "@/components/pages/Home/HomePage";
 import { Button } from "@/components/ui/button";
 
 const page = () => {
   return <>
-    <main className="flex flex-col items-center justify-center min-h-dvh text-center">
-      <h1 className="text-4xl font-semibold tracking-tight text-balance">Mahmoud Sayed</h1>
-      <p className="text-sm max-w-lg mt-4 tracking-tight font-me text-muted-foreground text-balance"></p>
-      <Button>Button</Button>
+    <main className="min-h-dvh flex flex-col bg-linear-to-b from-amber-50/50 to-bg-muted/20 dark:from-background dark:to-bg-muted/20">
+      <HomePage />
     </main>
   </>;
 };

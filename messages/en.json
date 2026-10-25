@@ -1,6 +1,8 @@
 {
-  "homePage": {
-    "title": "Home Page"
+  "home": {
+    "title": "Home Page",
+    "heroTitle": "Premium Furniture",
+    "heroSubtitle": "Crafted for comfort, designed for elegance"
   },
   "footer": {
     "home": "Home",
