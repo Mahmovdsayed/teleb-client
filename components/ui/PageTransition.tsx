@@ -1,13 +1,17 @@
-import { ViewTransition } from "react"
+import { ViewTransition } from "react";
+import type { ReactNode } from "react";
 
-export function PageTransition({ children }: { children: React.ReactNode }) {
+export function PageTransition({
+    children,
+}: {
+    children: ReactNode;
+}) {
     return (
         <ViewTransition
             enter="page-enter"
             exit="page-exit"
-            default="none"
         >
             {children}
         </ViewTransition>
-    )
+    );
 }

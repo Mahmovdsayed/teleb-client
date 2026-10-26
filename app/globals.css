@@ -149,30 +149,36 @@
 }
 
 :root {
-  --duration-exit: 120ms;
-  --duration-enter: 220ms;
-  --duration-move: 360ms;
+  --duration-exit: 100ms;
+  --duration-enter: 180ms;
+  --duration-move: 300ms;
 }
 
-@keyframes vt-fade-in {
+@keyframes vt-blur-in {
   from {
     opacity: 0;
-    scale: 0.98;
+    filter: blur(4px);
+    transform: scale(0.995);
   }
+
   to {
     opacity: 1;
-    scale: 1;
+    filter: blur(0);
+    transform: scale(1);
   }
 }
 
-@keyframes vt-fade-out {
+@keyframes vt-blur-out {
   from {
     opacity: 1;
-    scale: 1;
+    filter: blur(0);
+    transform: scale(1);
   }
+
   to {
     opacity: 0;
-    scale: 0.99;
+    filter: blur(4px);
+    transform: scale(1.005);
   }
 }
 
@@ -203,13 +209,11 @@
 }
 
 ::view-transition-old(.page-exit) {
-  will-change: opacity, scale;
-  animation: var(--duration-exit) ease-in both vt-fade-out;
+  animation: var(--duration-exit) ease-in both vt-blur-out;
 }
 
 ::view-transition-new(.page-enter) {
-  will-change: opacity, scale;
-  animation: var(--duration-enter) ease-out var(--duration-exit) both vt-fade-in;
+  animation: var(--duration-enter) ease-out var(--duration-exit) both vt-blur-in;
 }
 
 ::view-transition-group(.morph) {
@@ -224,4 +228,14 @@
     animation-duration: 0s !important;
     animation-delay: 0s !important;
   }
+}
+
+html[dir="rtl"] {
+  view-transition-name: none;
+}
+
+html[dir="rtl"]::view-transition-old(*),
+html[dir="rtl"]::view-transition-new(*),
+html[dir="rtl"]::view-transition-group(*) {
+  animation: none !important;
 }
