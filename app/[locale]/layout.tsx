@@ -9,6 +9,7 @@ import Provider from "@/provider/Provider"
 import "../globals.css";
 import { Metadata } from "next"
 import Footer from "@/components/layout/Footer"
+import Navbar from "@/components/layout/Navbar"
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -57,10 +58,13 @@ export default async function RootLayout({ children, params }: Props) {
         cairo.variable,
       )}
     >
-      <body>
+      <body className="overflow-x-hidden">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Provider>
-            {children}
+            <Navbar />
+            <main className="min-h-dvh ">
+              {children}
+            </main>
             <Footer />
           </Provider>
         </NextIntlClientProvider>

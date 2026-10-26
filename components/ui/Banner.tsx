@@ -12,6 +12,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
+import { BannerSkeleton } from "@/components/skeleton"
+
 const Banner = () => {
     const t = useTranslations("home");
     const [failedImages, setFailedImages] = useState<string[]>([]);
@@ -21,7 +23,7 @@ const Banner = () => {
         queryKey: ["banners"],
     });
 
-    if (isLoading) return null;
+    if (isLoading) return <BannerSkeleton />;
     console.log(data)
 
     const allImages = (data ?? []).flatMap((banner) =>
@@ -59,7 +61,7 @@ const Banner = () => {
 
     return (
         <section className="w-full">
-            <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
+            <div className="container mx-auto px-2 pt-4 pb-1 sm:px-4 sm:pt-6 sm:pb-2 lg:px-6">
                 <div className="relative overflow-hidden rounded-3xl">
                     <Swiper
                         modules={[Autoplay, Pagination, Navigation]}
@@ -75,7 +77,7 @@ const Banner = () => {
                         pagination={{ clickable: true }}
                         navigation={validImages.length > 1}
                         loop={validImages.length > 1}
-                        className="h-64 w-full sm:h-80 md:h-[420px]"
+                        className="w-full aspect-[21/9] md:aspect-[21/7] max-h-[480px] [&_.swiper-wrapper]:h-full [&_.swiper-slide]:h-full"
                         style={
                             {
                                 "--swiper-navigation-color": "#fff",
@@ -86,12 +88,12 @@ const Banner = () => {
                         {validImages.map((image, index) => (
                             <SwiperSlide
                                 key={image.publicId || image.url}
-                                className="relative h-full"
+                                className="relative h-full w-full overflow-hidden"
                             >
                                 <img
                                     src={image.url}
                                     alt={image.title || `Banner ${index + 1}`}
-                                    className="absolute inset-0 block h-full w-full object-cover object-center"
+                                    className="h-full w-full object-cover object-center"
                                     loading={index === 0 ? "eager" : "lazy"}
                                     decoding="async"
                                     onError={() =>

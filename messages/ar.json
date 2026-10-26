@@ -1,8 +1,37 @@
 {
+  "navbar": {
+    "home": "الرئيسية",
+    "products": "المنتجات",
+    "about": "من نحن",
+    "contact": "تواصل معنا",
+    "collections": "المجموعات",
+    "search": "ابحث في المنتجات والمجموعات…",
+    "noCollections": "لا توجد مجموعات",
+    "searchNoResults": "لا توجد نتائج",
+    "searchProducts": "المنتجات",
+    "searchCollections": "المجموعات",
+    "viewMore": "عرض المزيد",
+    "logoAr": "طلب للآثاث",
+    "logoEn": "Teleb Furniture",
+    "toggleTheme": "تبديل المظهر",
+    "toggleMenu": "تبديل القائمة",
+    "toggleSearch": "تبديل البحث",
+    "switchLang": "تغيير اللغة",
+    "playSlideshow": "تشغيل عرض الشرائح",
+    "pauseSlideshow": "إيقاف عرض الشرائح"
+  },
   "home": {
     "title": "الصفحة الرئيسية",
     "heroTitle": "أثاث فاخر",
-    "heroSubtitle": "صُنع للراحة، صُمم للأناقة"
+    "heroSubtitle": "صُنع للراحة، صُمم للأناقة",
+    "featuredCollections": "المجموعات المميزة",
+    "featuredSubtitle": "استكشف تصاميمنا المختارة لكل ركن في بيتك",
+    "viewAll": "عرض جميع المجموعات",
+    "bestSellers": "الأكثر مبيعاً",
+    "bestSellersSubtitle": "القطع الأكثر طلباً ومحبة من عملائنا",
+    "viewAllProducts": "عرض الكل",
+    "exploreProducts": "استكشف منتجاتنا",
+    "exploreProductsSubtitle": "صُنعت بعناية لتناسب مساحاتك العصرية"
   },
   "footer": {
     "home": "الرئيسية",

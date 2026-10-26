@@ -3,6 +3,15 @@ import createNextIntlPlugin from "next-intl/plugin"
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+    ],
+    formats: ["image/webp"],
+  },
   experimental: {
     turbopackRustReactCompiler: true,
     agentFeedback: true,

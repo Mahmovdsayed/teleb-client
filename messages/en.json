@@ -1,8 +1,37 @@
 {
+  "navbar": {
+    "home": "Home",
+    "products": "Products",
+    "about": "About Us",
+    "contact": "Contact",
+    "collections": "Collections",
+    "search": "Search products & collections…",
+    "noCollections": "No collections found",
+    "searchNoResults": "No results found",
+    "searchProducts": "Products",
+    "searchCollections": "Collections",
+    "viewMore": "View More Results",
+    "logoAr": "طلب للآثاث",
+    "logoEn": "Teleb Furniture",
+    "toggleTheme": "Toggle theme",
+    "toggleMenu": "Toggle menu",
+    "toggleSearch": "Toggle search",
+    "switchLang": "Switch language",
+    "playSlideshow": "Play slideshow",
+    "pauseSlideshow": "Pause slideshow"
+  },
   "home": {
     "title": "Home Page",
     "heroTitle": "Premium Furniture",
-    "heroSubtitle": "Crafted for comfort, designed for elegance"
+    "heroSubtitle": "Crafted for comfort, designed for elegance",
+    "featuredCollections": "Featured Collections",
+    "featuredSubtitle": "Explore our curated designs for every room",
+    "viewAll": "View All Collections",
+    "bestSellers": "Best Sellers",
+    "bestSellersSubtitle": "Most loved by our customers",
+    "viewAllProducts": "View All",
+    "exploreProducts": "Explore Products",
+    "exploreProductsSubtitle": "Carefully crafted for your living spaces"
   },
   "footer": {
     "home": "Home",
