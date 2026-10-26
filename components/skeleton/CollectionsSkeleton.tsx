@@ -14,7 +14,7 @@ export function CollectionsSkeleton() {
                     {Array.from({ length: 8 }).map((_, i) => (
                         <Skeleton
                             key={i}
-                            className="w-28 h-26 sm:w-36 sm:h-32 md:w-48 md:h-40 shrink-0 rounded-4xl"
+                            className="w-28 h-26 sm:w-36 sm:h-32 md:w-48 md:h-40 shrink-0 rounded-xl"
                         />
                     ))}
                 </div>

@@ -27,7 +27,7 @@ export default function CollectionsCarousel({ collections: initialCollections }:
     const { data: fetchedCollections = [], isLoading } = useAppQuery<Collection[]>({
         queryKey: ["collections"],
         queryFn: getCollections,
-        enabled: !initialCollections || initialCollections.length === 0,
+        // enabled: !initialCollections || initialCollections.length === 0,
     })
 
     const collections = (initialCollections && initialCollections.length > 0)

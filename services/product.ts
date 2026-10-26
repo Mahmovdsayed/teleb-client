@@ -6,6 +6,7 @@ import {
   SearchProductsResponse,
   GetProductsParams,
   GetProductsResponse,
+  GetProductByIdResponse,
 } from "@/types/Product.types"
 
 export const searchProducts = async (
@@ -75,4 +76,50 @@ export const getProducts = async (
     products: response.data ?? [],
     total: response.total ?? 0,
   }
+}
+
+export const getProductById = async (
+  id: string | number,
+  lang?: "ar" | "en"
+): Promise<Product | null> => {
+  const response = await apiRequest<GetProductByIdResponse>(
+    `${API_BASE_URL}/products/${id}`,
+    {
+      method: "GET",
+      locale: lang,
+    }
+  )
+
+  if (response.success === false || response.error) {
+    const message =
+      response.message ||
+      (typeof response.error === "string" ? response.error : response.error?.message) ||
+      "Failed to fetch product"
+    throw new Error(message)
+  }
+
+  return response.data ?? null
+}
+
+export const getProductBySlug = async (
+  slug: string,
+  lang?: "ar" | "en"
+): Promise<Product | null> => {
+  const response = await apiRequest<GetProductByIdResponse>(
+    `${API_BASE_URL}/products/slug/${encodeURIComponent(slug)}`,
+    {
+      method: "GET",
+      locale: lang,
+    }
+  )
+
+  if (response.success === false || response.error) {
+    const message =
+      response.message ||
+      (typeof response.error === "string" ? response.error : response.error?.message) ||
+      "Failed to fetch product"
+    throw new Error(message)
+  }
+
+  return response.data ?? null
 }

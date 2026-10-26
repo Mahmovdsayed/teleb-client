@@ -39,7 +39,7 @@ export default function SearchInput({
                     }`}
             />
             <input
-                type="search"
+                type="text"
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 onFocus={onFocus}

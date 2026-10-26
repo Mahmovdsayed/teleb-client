@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import Provider from "@/provider/Provider"
 import "../globals.css";
 import { Metadata } from "next"
+import { Suspense } from "react"
 import Footer from "@/components/layout/Footer"
 import Navbar from "@/components/layout/Navbar"
 
@@ -61,7 +62,9 @@ export default async function RootLayout({ children, params }: Props) {
       <body className="overflow-x-hidden">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Provider>
-            <Navbar />
+            <Suspense fallback={null}>
+              <Navbar />
+            </Suspense>
             <main className="min-h-dvh ">
               {children}
             </main>

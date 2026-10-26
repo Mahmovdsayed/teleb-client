@@ -36,7 +36,7 @@ export default function BestSellers({ initialProducts }: BestSellersProps) {
                 limit: 10,
                 lang: locale as "ar" | "en",
             }),
-        enabled: !initialProducts || initialProducts.length === 0,
+        // enabled: !initialProducts || initialProducts.length === 0,
     })
 
     const products = (initialProducts && initialProducts.length > 0)

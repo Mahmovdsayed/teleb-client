@@ -45,5 +45,23 @@ export const searchProductsResponseSchema = z.object({
   message: z.string().optional(),
 })
 
+export const getProductsFilterSchema = z.object({
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(12),
+  collectionId: z.coerce.number().int().positive().optional(),
+  offerId: z.coerce.number().int().positive().optional(),
+  status: z.enum(["active", "inactive"]).optional(),
+  bestSeller: z.preprocess((val) => {
+    if (val === "true" || val === true) return true
+    if (val === "false" || val === false) return false
+    return undefined
+  }, z.boolean().optional()),
+  sort: z.enum(["createdAt", "name"]).optional(),
+  order: z.enum(["asc", "desc"]).optional(),
+  search: z.string().trim().optional(),
+  lang: z.enum(["ar", "en"]).optional(),
+})
+
 export type SearchProductQueryInput = z.infer<typeof searchProductQuerySchema>
 export type ProductSchema = z.infer<typeof productSchema>
+export type GetProductsFilterInput = z.infer<typeof getProductsFilterSchema>

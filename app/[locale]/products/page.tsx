@@ -1,14 +1,43 @@
-import { PageTransition } from "@/components/ui/PageTransition";
+import { Suspense } from "react"
+import type { Metadata } from "next"
+import { getTranslations } from "next-intl/server"
+import { PageTransition } from "@/components/ui/PageTransition"
+import { ProductsContent } from "@/components/pages/Products/ProductsContent"
 
-const page = () => {
-    return (
-        <PageTransition>
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-                <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">Products</h1>
-                <p className="max-w-5xl mt-2 tracking-tight text-xs md:text-sm text-muted-foreground ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto illum, quasi dolore vero modi vitae eos fugiat fugit necessitatibus accusantium accusamus, facere repellat dicta fuga, magni quas perspiciatis impedit velit.</p>
-            </div>
-        </PageTransition>
-    );
-};
+interface Props {
+  params: Promise<{
+    locale: string
+  }>
+}
 
-export default page;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: "productsPage" })
+  const brand = locale === "ar" ? "طلب للأثاث" : "Teleb Furniture"
+
+  return {
+    title: `${t("title")} | ${brand}`,
+    description: t("subtitle"),
+    openGraph: {
+      title: `${t("title")} | ${brand}`,
+      description: t("subtitle"),
+      locale: locale === "ar" ? "ar_EG" : "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${t("title")} | ${brand}`,
+      description: t("subtitle"),
+    },
+  }
+}
+
+export default function ProductsPage() {
+  return (
+    <PageTransition>
+      <Suspense fallback={null}>
+        <ProductsContent />
+      </Suspense>
+    </PageTransition>
+  )
+}

@@ -5,6 +5,13 @@ export interface ProductTranslation {
   name: string
   description?: string | null
   smallDescription?: string | null
+  materials?: { name: string }[] | null
+  features?: { name: string }[] | null
+  height?: string | number | null
+  width?: string | number | null
+  metaTitle?: string | null
+  metaDescription?: string | null
+  metaKeywords?: string[] | null
   tags?: string[]
 }
 
@@ -17,6 +24,14 @@ export interface ProductImage {
   isMain?: boolean
 }
 
+export interface ProductVariant {
+  id?: number
+  productId?: number
+  size?: string | null
+  weight?: string | number | null
+  isAvailable?: boolean
+}
+
 export interface Product {
   id: number
   collectionId?: number
@@ -25,8 +40,13 @@ export interface Product {
   status: "active" | "inactive"
   isBestSeller?: boolean
   isCustomizable?: boolean
+  warranty?: number | null
+  weight?: string | number | null
+  createdAt?: string | Date
+  updatedAt?: string | Date
   translations?: ProductTranslation[]
   images?: ProductImage[]
+  variants?: ProductVariant[]
 }
 
 export interface SearchProductsParams {
@@ -60,6 +80,13 @@ export interface GetProductsResponse {
   success: boolean
   data?: Product[]
   total?: number
+  message?: string
+  error?: string | { message?: string }
+}
+
+export interface GetProductByIdResponse {
+  success: boolean
+  data?: Product
   message?: string
   error?: string | { message?: string }
 }
