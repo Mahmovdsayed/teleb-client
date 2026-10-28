@@ -131,15 +131,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  viewportFit: "cover",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#FFFBEB" },
-    { media: "(prefers-color-scheme: dark)", color: "#030712" },
-  ],
-}
+
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
@@ -155,6 +147,15 @@ function JsonLd({ data }: { data: Record<string, unknown> }) {
     />
   )
 }
+
+export const viewport: Viewport = {
+  width: "device-width",
+  height: "device-height",
+  initialScale: 1,
+  viewportFit: "cover",
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export default async function RootLayout({ children, params }: Props) {
   const { locale } = await params
