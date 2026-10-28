@@ -210,7 +210,7 @@ export default function Navbar() {
                     <Link
                         id="navbar-logo"
                         href={localePath("/")}
-                        className="shrink-0 py-1 text-lg font-bold tracking-tight text-foreground transition-opacity hover:opacity-85"
+                        className="shrink-0 py-1 text-base md:text-lg font-bold tracking-tight text-foreground transition-opacity hover:opacity-85"
                     >
                         {isAr ? t("logoAr") : t("logoEn")}
                     </Link>

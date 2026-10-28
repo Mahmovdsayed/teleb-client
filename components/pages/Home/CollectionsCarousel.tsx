@@ -15,19 +15,23 @@ interface CollectionsCarouselProps {
     collections?: Collection[]
 }
 
+const SPEED_MOBILE = 45
+const SPEED_DESKTOP = 60
+
 export default function CollectionsCarousel({ collections: initialCollections }: CollectionsCarouselProps) {
     const t = useTranslations("home")
     const locale = useLocale()
     const isAr = locale === "ar"
 
     const [hoveredId, setHoveredId] = useState<string | number | null>(null)
+    const [copies, setCopies] = useState(2) // computed from real widths below
     const trackRef = useRef<HTMLDivElement>(null)
     const tweenRef = useRef<gsap.core.Tween | null>(null)
 
     const { data: fetchedCollections = [], isLoading } = useAppQuery<Collection[]>({
         queryKey: ["collections"],
         queryFn: getCollections,
-        // enabled: !initialCollections || initialCollections.length === 0,
+        enabled: !initialCollections || initialCollections.length === 0,
     })
 
     const collections = (initialCollections && initialCollections.length > 0)
@@ -35,50 +39,89 @@ export default function CollectionsCarousel({ collections: initialCollections }:
         : fetchedCollections
 
     const displayCollections: CarouselItem[] = useMemo(() => {
-        return collections.map((col) => {
-            return {
-                id: col.id,
-                iconName: col.icon || "box",
-                title: isAr ? col.arName : col.enName,
-                productCount: undefined,
-            }
-        })
+        return collections.map((col) => ({
+            id: col.id,
+            iconName: col.icon || "box",
+            title: isAr ? col.arName : col.enName,
+            productCount: undefined,
+        }))
     }, [collections, isAr])
 
     useEffect(() => {
         const track = trackRef.current
-        if (!track || displayCollections.length === 0) return
+        const firstGroup = track?.firstElementChild as HTMLElement | null
+        const viewportEl = track?.parentElement
+        if (!track || !firstGroup || !viewportEl || displayCollections.length === 0) return
 
-        gsap.ticker.lagSmoothing(0)
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        const isDesktop = () => window.matchMedia("(min-width: 768px)").matches
+        let raf = 0
 
-        const ctx = gsap.context(() => {
-            const tween = gsap.to(track, {
-                xPercent: -50,
-                repeat: -1,
-                duration: Math.max(25, displayCollections.length * 3),
-                ease: "none",
-                force3D: true,
-            })
+        const build = () => {
+            const gap = parseFloat(getComputedStyle(track).columnGap || "0") || 0
+            const distance = firstGroup.offsetWidth + gap
+            if (distance <= 0) return
+
+            const needed = Math.max(2, Math.ceil(viewportEl.offsetWidth / distance) + 1)
+            setCopies((prev) => (prev === needed ? prev : needed))
+
+            const old = tweenRef.current
+            const progress = old?.progress() ?? 0
+            const wasPaused = old?.paused() ?? false
+            old?.kill()
+            gsap.set(track, { x: 0 })
+
+            const speed = isDesktop() ? SPEED_DESKTOP : SPEED_MOBILE
+            const tween = gsap.fromTo(
+                track,
+                { x: 0 },
+                {
+                    x: -distance,
+                    repeat: -1,
+                    duration: distance / speed,
+                    ease: "none",
+                    force3D: true,
+                }
+            )
+            tween.progress(progress)
+            if (wasPaused || reduceMotion) tween.pause()
             tweenRef.current = tween
+        }
 
-            const onEnter = () => tween.pause()
-            const onLeave = () => tween.play()
+        const scheduleBuild = () => {
+            cancelAnimationFrame(raf)
+            raf = requestAnimationFrame(build)
+        }
 
-            track.addEventListener("mouseenter", onEnter)
-            track.addEventListener("mouseleave", onLeave)
-            track.addEventListener("touchstart", onEnter, { passive: true })
-            track.addEventListener("touchend", onLeave, { passive: true })
+        build()
 
-            return () => {
-                track.removeEventListener("mouseenter", onEnter)
-                track.removeEventListener("mouseleave", onLeave)
-                track.removeEventListener("touchstart", onEnter)
-                track.removeEventListener("touchend", onLeave)
-                tween.kill()
-            }
-        })
+        const ro = new ResizeObserver(scheduleBuild)
+        ro.observe(firstGroup)
+        ro.observe(viewportEl)
 
-        return () => ctx.revert()
+        const pause = () => tweenRef.current?.pause()
+        const play = () => { if (!reduceMotion) tweenRef.current?.play() }
+
+        const onPointerEnter = (e: PointerEvent) => { if (e.pointerType === "mouse") pause() }
+        const onPointerLeave = (e: PointerEvent) => { if (e.pointerType === "mouse") play() }
+
+        track.addEventListener("pointerenter", onPointerEnter)
+        track.addEventListener("pointerleave", onPointerLeave)
+        track.addEventListener("touchstart", pause, { passive: true })
+        track.addEventListener("touchend", play, { passive: true })
+        track.addEventListener("touchcancel", play, { passive: true })
+
+        return () => {
+            cancelAnimationFrame(raf)
+            tweenRef.current?.kill()
+            tweenRef.current = null
+            ro.disconnect()
+            track.removeEventListener("pointerenter", onPointerEnter)
+            track.removeEventListener("pointerleave", onPointerLeave)
+            track.removeEventListener("touchstart", pause)
+            track.removeEventListener("touchend", play)
+            track.removeEventListener("touchcancel", play)
+        }
     }, [displayCollections.length])
 
     if (isLoading && displayCollections.length === 0) {
@@ -106,19 +149,15 @@ export default function CollectionsCarousel({ collections: initialCollections }:
 
                 <div
                     ref={trackRef}
-                    className="flex w-max flex-nowrap gap-3 sm:gap-4 py-4 [will-change:transform] [transform:translate3d(0,0,0)] [backface-visibility:hidden]"
-                    style={{ transform: "translate3d(0,0,0)", WebkitBackfaceVisibility: "hidden" }}
+                    className="flex w-max flex-nowrap gap-3 sm:gap-4 py-4 will-change-transform"
                 >
-                    <CardGroup
-                        items={displayCollections}
-                        hoveredId={hoveredId}
-                        onHover={setHoveredId}
-                    />
-                    <CardGroup
-                        items={displayCollections}
-                        hoveredId={hoveredId}
-                        onHover={setHoveredId}
-                    />
+                    {Array.from({ length: copies }).map((_, i) => (
+                        <CardGroup
+                            key={i}
+                            items={displayCollections}
+                            hoveredId={hoveredId}
+                        />
+                    ))}
                 </div>
             </div>
         </section>

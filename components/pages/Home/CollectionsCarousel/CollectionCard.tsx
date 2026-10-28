@@ -9,18 +9,15 @@ import type { CarouselItem } from "./types"
 interface CollectionCardProps {
     item: CarouselItem
     isDimmed?: boolean
-    onHover?: (id: string | number | null) => void
 }
 
-export default function CollectionCard({ item, isDimmed = false, onHover }: CollectionCardProps) {
+export default function CollectionCard({ item, isDimmed = false  }: CollectionCardProps) {
     const locale = useLocale()
     const isAr = locale === "ar"
 
     return (
         <Link
-            href={`/${locale}/collections/${item.id}`}
-            onMouseEnter={() => onHover?.(item.id)}
-            onMouseLeave={() => onHover?.(null)}
+            href={`/${locale}/products?collectionId=${item.id}`}
             className={`group block shrink-0 w-28 sm:w-34 md:w-44 select-none transition-all duration-300 ease-out ${
                 isDimmed ? "opacity-35 blur-[2px] scale-[0.96]" : "opacity-100 blur-none scale-100"
             }`}

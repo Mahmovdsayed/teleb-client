@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { useLocale, useTranslations } from "next-intl"
 import { SlidersHorizontal, Check, Sparkles, RotateCcw } from "lucide-react"
 import type { Collection } from "@/types/Collection.types"
@@ -46,8 +47,16 @@ export function ProductsFilterDrawer({
   const locale = useLocale()
   const isAr = locale === "ar"
 
+  const [open, setOpen] = useState(false)
+
+  // Close the drawer after applying a filter change
+  const closeAfter = (action: () => void) => {
+    action()
+    setOpen(false)
+  }
+
   return (
-    <Drawer showSwipeHandle>
+    <Drawer open={open} onOpenChange={setOpen} showSwipeHandle>
       <DrawerTrigger
         render={
           <Button
@@ -84,7 +93,7 @@ export function ProductsFilterDrawer({
                 type="button"
                 variant="ghost"
                 size="xs"
-                onClick={onResetFilters}
+                onClick={() => closeAfter(onResetFilters)}
                 className="gap-1 text-xs text-muted-foreground hover:text-foreground"
               >
                 <RotateCcw className="size-3" />
@@ -102,7 +111,7 @@ export function ProductsFilterDrawer({
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
-                onClick={() => onSelectCollection(null)}
+                onClick={() => closeAfter(() => onSelectCollection(null))}
                 className={cn(
                   "flex items-center justify-between rounded-lg border p-2.5 text-xs font-medium transition-all text-start cursor-pointer",
                   selectedCollectionId === null
@@ -122,7 +131,9 @@ export function ProductsFilterDrawer({
                   <button
                     key={col.id}
                     type="button"
-                    onClick={() => onSelectCollection(isSelected ? null : col.id)}
+                    onClick={() =>
+                      closeAfter(() => onSelectCollection(isSelected ? null : col.id))
+                    }
                     className={cn(
                       "flex items-center justify-between rounded-lg border p-2.5 text-xs font-medium transition-all text-start cursor-pointer",
                       isSelected
@@ -145,7 +156,7 @@ export function ProductsFilterDrawer({
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
-                onClick={onToggleBestSeller}
+                onClick={() => closeAfter(onToggleBestSeller)}
                 className={cn(
                   "flex items-center justify-between rounded-lg border p-2.5 text-xs font-medium transition-all cursor-pointer",
                   bestSeller
@@ -161,7 +172,7 @@ export function ProductsFilterDrawer({
 
               <button
                 type="button"
-                onClick={onToggleStatus}
+                onClick={() => closeAfter(onToggleStatus)}
                 className={cn(
                   "flex items-center justify-between rounded-lg border p-2.5 text-xs font-medium transition-all cursor-pointer",
                   status === "active"
