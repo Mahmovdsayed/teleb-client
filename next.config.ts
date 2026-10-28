@@ -3,7 +3,6 @@ import createNextIntlPlugin from "next-intl/plugin"
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
-  allowedDevOrigins: ["192.168.1.3"],
   images: {
     remotePatterns: [
       {
@@ -13,11 +12,20 @@ const nextConfig: NextConfig = {
     ],
     formats: ["image/webp"],
   },
+  reactStrictMode: true,
+  productionBrowserSourceMaps: false,
+  poweredByHeader: false,
+  compress: true,
   experimental: {
     turbopackRustReactCompiler: true,
     agentFeedback: true,
+    turbopackGc: true,
+    turbopackLazyDynamicImports: true,
   },
   cacheComponents: true,
+  compiler: {
+    removeConsole: true,
+  },
   partialPrefetching: true,
   turbopack: {
     rules: {
