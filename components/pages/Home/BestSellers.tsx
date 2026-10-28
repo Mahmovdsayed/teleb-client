@@ -36,7 +36,7 @@ export default function BestSellers({ initialProducts }: BestSellersProps) {
                 limit: 10,
                 lang: locale as "ar" | "en",
             }),
-        // enabled: !initialProducts || initialProducts.length === 0,
+        enabled: !initialProducts || initialProducts.length === 0,
     })
 
     const products = (initialProducts && initialProducts.length > 0)
@@ -98,7 +98,6 @@ export default function BestSellers({ initialProducts }: BestSellersProps) {
                         slidesPerView={1.5}
                         slidesPerGroup={1}
                         freeMode={true}
-                        loop
                         navigation={{
                             prevEl: `.prev-${sectionId}`,
                             nextEl: `.next-${sectionId}`,

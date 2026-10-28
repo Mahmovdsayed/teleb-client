@@ -164,7 +164,7 @@ export default function Navbar() {
     }
 
     const handleCollectionClick = (collection: Collection) => {
-        router.push(`/${locale}/collections/${collection.id}`)
+        router.push(`/${locale}/products?collectionId=${collection.id}`)
         setIsCollectionsOpen(false)
         setIsMobileCollectionsOpen(false)
         setIsMenuOpen(false)

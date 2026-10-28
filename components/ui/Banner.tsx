@@ -24,7 +24,6 @@ const Banner = () => {
     });
 
     if (isLoading) return <BannerSkeleton />;
-    console.log(data)
 
     const allImages = (data ?? []).flatMap((banner) =>
         [...(banner.images ?? [])]

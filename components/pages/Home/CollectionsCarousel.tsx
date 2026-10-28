@@ -24,7 +24,7 @@ export default function CollectionsCarousel({ collections: initialCollections }:
     const isAr = locale === "ar"
 
     const [hoveredId, setHoveredId] = useState<string | number | null>(null)
-    const [copies, setCopies] = useState(2) // computed from real widths below
+    const [copies, setCopies] = useState(2)
     const trackRef = useRef<HTMLDivElement>(null)
     const tweenRef = useRef<gsap.core.Tween | null>(null)
 
