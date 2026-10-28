@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const product = await getProductById(id, locale)
     if (!product) {
       return {
-        title: locale === "ar" ? "المنتج غير موجود | طلب للأثاث" : "Product Not Found | Teleb Furniture",
+        title: locale === "ar" ? "المنتج غير موجود" : "Product Not Found",
       }
     }
 
@@ -30,13 +30,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       product.translations?.find((tr) => tr.locale === locale) ||
       product.translations?.[0]
 
-    const brand = locale === "ar" ? "طلب للأثاث" : "Teleb Furniture"
-    const title = translation?.metaTitle || `${translation?.name || product.slug} | ${brand}`
+    const title = translation?.metaTitle || `${translation?.name || product.slug}`
     const description =
       translation?.metaDescription ||
       translation?.smallDescription ||
       translation?.description ||
-      (locale === "ar" ? "أثاث منزلي عصري فاخر من طلب للأثاث" : "Luxury modern furniture by Teleb Furniture")
+      (locale === "ar" ? "أثاث منزلي عصري فاخر" : "Luxury modern furniture")
 
     const mainImage =
       product.images?.find((img) => img.isMain)?.url ||
@@ -62,7 +61,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   } catch {
     return {
-      title: locale === "ar" ? "تفاصيل المنتج | طلب للأثاث" : "Product Details | Teleb Furniture",
+      title: locale === "ar" ? "تفاصيل المنتج" : "Product Details",
     }
   }
 }

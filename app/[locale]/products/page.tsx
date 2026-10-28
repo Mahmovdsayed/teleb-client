@@ -13,20 +13,19 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: "productsPage" })
-  const brand = locale === "ar" ? "طلب للأثاث" : "Teleb Furniture"
 
   return {
-    title: `${t("title")} | ${brand}`,
+    title: `${t("title")}`,
     description: t("subtitle"),
     openGraph: {
-      title: `${t("title")} | ${brand}`,
+      title: `${t("title")}`,
       description: t("subtitle"),
       locale: locale === "ar" ? "ar_EG" : "en_US",
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${t("title")} | ${brand}`,
+      title: `${t("title")}`,
       description: t("subtitle"),
     },
   }

@@ -29,15 +29,13 @@ export const Footer = () => {
     const quickLinks = [
         { href: "/", label: t("home") },
         { href: "/about", label: t("about") },
-        { href: "/collections", label: t("collections") },
         { href: "/contact", label: t("contact") },
     ];
 
     const categories = [
-        { href: "/collections/bedroom", label: t("bedroom") },
-        { href: "/collections/living-room", label: t("livingRoom") },
-        { href: "/collections/outdoor", label: t("outdoor") },
-        { href: "/collections/office", label: t("office") },
+        { href: "/products?collectionId=43", label: t("bedroom") },
+        { href: "/products?collectionId=10", label: t("livingRoom") },
+        { href: "/products?collectionId=54", label: t("outdoor") },
     ];
 
     const contacts = [
