@@ -95,7 +95,7 @@ export default function SearchResultsDropdown({
                                     onMouseDown={(e) => {
                                         e.preventDefault()
                                         e.stopPropagation()
-                                        onProductClick(product.slug)
+                                        onProductClick(product.id)
                                     }}
                                     className="flex w-full items-center gap-3 px-4 py-2.5 text-start transition-colors hover:bg-muted/50"
                                 >

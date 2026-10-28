@@ -158,8 +158,8 @@ export default function Navbar() {
         setSearchQuery("")
     }
 
-    const handleProductClick = (slug: string) => {
-        router.push(`/${locale}/products/${slug}`)
+    const handleProductClick = (id: number) => {
+        router.push(`/${locale}/products/${id}`)
         closeSearch()
     }
 

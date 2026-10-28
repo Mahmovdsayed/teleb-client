@@ -11,7 +11,7 @@ export interface SearchResultsProps {
   products: Product[]
   collections: Collection[]
   isAr: boolean
-  onProductClick: (slug: string) => void
+  onProductClick: (id: number) => void
   onCollectionClick: (collection: Collection) => void
   onViewMore: () => void
 }
