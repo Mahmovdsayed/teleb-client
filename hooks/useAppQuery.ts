@@ -36,7 +36,6 @@ export function useAppQuery<TData>({
     staleTime,
     gcTime,
     refetchInterval,
-    refetchOnMount: "always",
     refetchOnWindowFocus,
     retry,
     initialData,
