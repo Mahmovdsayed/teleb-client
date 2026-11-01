@@ -210,6 +210,7 @@ export default function Navbar() {
                     <Link
                         id="navbar-logo"
                         href={localePath("/")}
+                        prefetch={true}
                         className="shrink-0 py-1 text-base md:text-lg font-bold tracking-tight text-foreground transition-opacity hover:opacity-85"
                     >
                         {isAr ? t("logoAr") : t("logoEn")}
@@ -220,6 +221,7 @@ export default function Navbar() {
                             <Link
                                 key={link.href}
                                 href={localePath(link.href)}
+                                prefetch={true}
                                 className={NAV_LINK_CLASS}
                             >
                                 {link.label}
@@ -387,6 +389,7 @@ export default function Navbar() {
                                     key={link.href}
                                     href={localePath(link.href)}
                                     onClick={() => setIsMenuOpen(false)}
+                                    prefetch={true}
                                     className={`${NAV_LINK_CLASS} py-3`}
                                 >
                                     {link.label}

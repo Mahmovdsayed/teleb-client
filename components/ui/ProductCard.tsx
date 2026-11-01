@@ -21,17 +21,13 @@ export interface ProductCardData {
     slug?: string
 }
 
-export interface ProductCardProps {
+interface ProductCardProps {
     product: ProductCardData | Product
     className?: string
     priority?: boolean
 }
 
-export default function ProductCard({
-    product,
-    className = "",
-    priority = false,
-}: ProductCardProps) {
+export default function ProductCard({ product, className = "", priority = false }: ProductCardProps) {
     const locale = useLocale()
     const isRtl = locale === "ar"
 
@@ -61,17 +57,16 @@ export default function ProductCard({
     return (
         <Link
             href={`/${locale}/products/${product.id}`}
+            prefetch={true}
             className={`group block select-none ${className}`}
         >
-            <div className="relative aspect-4/3 rounded-lg overflow-hidden bg-muted">
+            <div className="relative aspect-4/3 rounded-xl overflow-hidden bg-muted">
                 {imageUrl ? (
                     <Image
                         src={imageUrl}
                         alt={name}
                         fill
-                        priority={priority}
-                        loading={priority ? "eager" : undefined}
-                        className="object-cover rounded-lg object-center transition-transform duration-500 ease-out group-hover:scale-105"
+                        className="object-cover rounded-xl object-center transition-transform duration-500 ease-out group-hover:scale-105"
                         sizes="(max-width: 480px) 66vw, (max-width: 640px) 40vw, (max-width: 768px) 30vw, (max-width: 1024px) 25vw, 20vw"
                     />
                 ) : (
@@ -82,7 +77,7 @@ export default function ProductCard({
             </div>
 
             <div className="mt-2.5">
-                <h3 className="text-xs md:text-sm font-medium text-foreground line-clamp-1 transition-colors duration-200 group-hover:text-primary">
+                <h3 className="text-xs md:text-sm font-bold text-foreground line-clamp-1 transition-colors duration-200 group-hover:text-primary">
                     {name}
                 </h3>
                 {description && (

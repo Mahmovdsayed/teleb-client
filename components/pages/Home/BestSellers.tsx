@@ -65,6 +65,7 @@ export default function BestSellers({ initialProducts }: BestSellersProps) {
                     <div className="flex items-center gap-2">
                         <Link
                             href={`/${locale}/products?bestSeller=true`}
+                            prefetch={true}
                             className="hidden sm:inline-flex items-center gap-1.5 text-xs md:text-sm font-medium text-muted-foreground hover:text-foreground transition-colors me-2"
                         >
                             <span>{t("viewAllProducts")}</span>

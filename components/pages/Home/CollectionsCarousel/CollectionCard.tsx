@@ -18,6 +18,7 @@ export default function CollectionCard({ item, isDimmed = false  }: CollectionCa
     return (
         <Link
             href={`/${locale}/products?collectionId=${item.id}`}
+            prefetch={true}
             className={`group block shrink-0 w-28 sm:w-34 md:w-44 select-none transition-all duration-300 ease-out ${
                 isDimmed ? "opacity-35 blur-[2px] scale-[0.96]" : "opacity-100 blur-none scale-100"
             }`}

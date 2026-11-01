@@ -62,6 +62,7 @@ export const Footer = () => {
                     <div className="col-span-2 lg:col-span-4">
                         <Link
                             href={`/${locale}`}
+                            prefetch={true}
                             className={`inline-block text-xl font-semibold tracking-tight text-foreground ${focusRing}`}
                         >
                             {t("logo")}
@@ -93,6 +94,7 @@ export const Footer = () => {
                                 <li key={link.href}>
                                     <Link
                                         href={`/${locale}${link.href === "/" ? "" : link.href}`}
+                                        prefetch={true}
                                         className={navLink}
                                     >
                                         {link.label}
@@ -107,7 +109,7 @@ export const Footer = () => {
                         <ul className="space-y-3">
                             {categories.map((link) => (
                                 <li key={link.href}>
-                                    <Link href={`/${locale}${link.href}`} className={navLink}>
+                                    <Link href={`/${locale}${link.href}`} prefetch={true} className={navLink}>
                                         {link.label}
                                     </Link>
                                 </li>

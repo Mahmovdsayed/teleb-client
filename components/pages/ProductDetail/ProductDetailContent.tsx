@@ -57,6 +57,7 @@ export function ProductDetailContent({
         </div>
         <Link
           href={`/${locale}/products`}
+          prefetch={true}
           className="inline-flex items-center gap-2 mt-2 px-6 py-3 rounded-xl border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors"
         >
           <ArrowLeft className={`size-4 ${isRtl ? "rotate-180" : ""}`} />

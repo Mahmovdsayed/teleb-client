@@ -55,6 +55,7 @@ export default function ExploreProducts({ initialProducts }: ExploreProductsProp
 
                     <Link
                         href={`/${locale}/products`}
+                        prefetch={true}
                         className="inline-flex items-center gap-1.5 text-xs md:text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                     >
                         <span>{t("viewAllProducts")}</span>

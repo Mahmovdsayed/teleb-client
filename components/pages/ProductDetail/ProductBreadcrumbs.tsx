@@ -69,6 +69,7 @@ export function ProductBreadcrumbs({ productName, collection }: BreadcrumbsProps
       >
         <Link
           href={`/${locale}`}
+          prefetch={true}
           className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
         >
           <Home className="size-3.5" />
@@ -79,6 +80,7 @@ export function ProductBreadcrumbs({ productName, collection }: BreadcrumbsProps
 
         <Link
           href={`/${locale}/products`}
+          prefetch={true}
           className="hover:text-foreground transition-colors"
         >
           {t("products")}
@@ -89,6 +91,7 @@ export function ProductBreadcrumbs({ productName, collection }: BreadcrumbsProps
             <ChevronRight className={`size-3 text-muted-foreground/50 shrink-0 ${isRtl ? "rotate-180" : ""}`} />
             <Link
               href={`/${locale}/products?collectionId=${collection.id}`}
+              prefetch={true}
               className="hover:text-foreground transition-colors"
             >
               {collection.name}

@@ -123,6 +123,7 @@ export function ProductInfo({ product, translation, collection }: ProductInfoPro
         {collection && (
           <Link
             href={`/${locale}/products?collectionId=${collection.id}`}
+            prefetch={true}
             className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-amber-700 dark:hover:text-amber-400 transition-colors group"
           >
             <span>{collection.name}</span>
