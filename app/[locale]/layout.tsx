@@ -149,6 +149,7 @@ function JsonLd({ data }: { data: Record<string, unknown> }) {
 }
 
 export const viewport: Viewport = {
+  themeColor: "#93784b",
   width: "device-width",
   height: "device-height",
   initialScale: 1,
