@@ -239,7 +239,7 @@ export default async function RootLayout({ children, params }: Props) {
       lang={locale}
       dir={direction}
       suppressHydrationWarning
-      className={cn("antialiased", montserrat.variable, cairo.variable)}
+      className={cn("antialiased scroll-smooth", montserrat.variable, cairo.variable)}
     >
       <body className="overflow-x-hidden">
         <JsonLd data={organizationJsonLd} />
