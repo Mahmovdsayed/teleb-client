@@ -2,8 +2,9 @@ import { MetadataRoute } from "next"
 import { cacheLife } from "next/cache"
 import type { Product } from "@/types/Product.types"
 import { getProducts } from "@/services/product"
+import { SITE_URL, productPath } from "@/lib/seo/site"
 
-const siteUrl = "https://www.teleb-furniture.com"
+const siteUrl = SITE_URL
 const PAGE_SIZE = 100
 const MAX_PAGES = 50
 
@@ -16,7 +17,7 @@ const staticPages = [
   { path: "/contact", priority: 0.7, changeFrequency: "monthly" as const },
 ]
 
-const localizedUrl = (path: string, locale: "en" | "ar") => `${siteUrl}${locale === "en" ? path : `/ar${path}`}`
+const localizedUrl = (path: string, locale: "en" | "ar") => `${siteUrl}/${locale}${path}`
 
 const alternatesFor = (path: string) => ({
   languages: {
@@ -67,20 +68,18 @@ async function getProductEntries(): Promise<MetadataRoute.Sitemap> {
   const now = new Date()
   const products = await getAllActiveProducts()
 
-  return products
-    .filter((p) => Boolean(p.slug))
-    .flatMap((product) => {
-      const path = `/products/${product.slug}`
-      const lastModified = product.updatedAt ? new Date(product.updatedAt) : now
+  return products.flatMap((product) => {
+    const path = productPath(product)
+    const lastModified = product.updatedAt ? new Date(product.updatedAt) : now
 
-      return locales.map((locale) => ({
-        url: localizedUrl(path, locale),
-        lastModified,
-        changeFrequency: "weekly" as const,
-        priority: 0.8,
-        alternates: alternatesFor(path),
-      }))
-    })
+    return locales.map((locale) => ({
+      url: localizedUrl(path, locale),
+      lastModified,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+      alternates: alternatesFor(path),
+    }))
+  })
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

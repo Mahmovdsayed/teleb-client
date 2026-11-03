@@ -158,8 +158,9 @@ export default function Navbar() {
         setSearchQuery("")
     }
 
-    const handleProductClick = (id: number) => {
-        router.push(`/${locale}/products/${id}`)
+    const handleProductClick = (id: number, slug?: string) => {
+        const segment = slug?.trim() ? encodeURIComponent(slug.trim()) : id
+        router.push(`/${locale}/products/${segment}`)
         closeSearch()
     }
 

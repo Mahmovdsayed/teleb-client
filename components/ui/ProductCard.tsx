@@ -54,9 +54,13 @@ export default function ProductCard({ product, className = "", priority = false 
         product.images?.find((img) => img.isMain)?.url ||
         product.images?.[0]?.url
 
+    const productSegment = product.slug?.trim()
+        ? encodeURIComponent(product.slug.trim())
+        : product.id
+
     return (
         <Link
-            href={`/${locale}/products/${product.id}`}
+            href={`/${locale}/products/${productSegment}`}
             prefetch={true}
             className={`group block select-none ${className}`}
         >

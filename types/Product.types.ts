@@ -37,6 +37,7 @@ export interface Product {
   collectionId?: number
   offerId?: number | null
   slug: string
+  price?: number | string | null
   status: "active" | "inactive"
   isBestSeller?: boolean
   isCustomizable?: boolean

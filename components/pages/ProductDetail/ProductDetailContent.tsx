@@ -12,6 +12,9 @@ import { ProductInfo } from "./ProductInfo"
 import { ProductDetailsTabs } from "./ProductDetailsTabs"
 import { RelatedProducts } from "./RelatedProducts"
 import { ProductDetailSkeleton } from "@/components/skeleton"
+import { JsonLd } from "@/components/seo/JsonLd"
+import { buildItemPageSchema, buildProductSchema } from "@/lib/seo/schema"
+import { absoluteUrl, localePath, productPath } from "@/lib/seo/site"
 import type { Product } from "@/types/Product.types"
 import type { Collection } from "@/types/Collection.types"
 
@@ -74,45 +77,47 @@ export function ProductDetailContent({
   const matchedCollection = collections?.find((c) => c.id === product.collectionId)
   const collectionData = matchedCollection
     ? {
-        id: matchedCollection.id,
-        name: isRtl ? matchedCollection.arName : matchedCollection.enName,
-      }
+      id: matchedCollection.id,
+      name: isRtl ? matchedCollection.arName : matchedCollection.enName,
+    }
     : null
 
   const productName = translation?.name || product.slug
 
-  const productJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
+  const pageUrl = absoluteUrl(localePath(locale, productPath(product)))
+  const mainImage =
+    product.images?.find((img) => img.isMain)?.url || product.images?.[0]?.url
+
+  const productSchema = buildProductSchema({
+    product,
+    translation,
+    locale,
+    url: pageUrl,
+    collectionName: collectionData?.name ?? null,
+  })
+
+  const itemPageSchema = buildItemPageSchema({
+    url: pageUrl,
     name: productName,
-    description: translation?.description || translation?.smallDescription || "",
-    image: product.images?.map((img) => img.url) || [],
-    sku: `PROD-${product.id}`,
-    brand: {
-      "@type": "Brand",
-      name: locale === "ar" ? "طلب للأثاث" : "Teleb Furniture",
-    },
-    offers: {
-      "@type": "Offer",
-      availability:
-        product.status === "active"
-          ? "https://schema.org/InStock"
-          : "https://schema.org/OutOfStock",
-      priceCurrency: "EGP",
-      url: `${process.env.NEXT_PUBLIC_SITE_URL || ""}/${locale}/products/${product.id}`,
-    },
-  }
+    description: translation?.description || translation?.smallDescription,
+    image: mainImage,
+    locale,
+    breadcrumbId: `${pageUrl}#breadcrumb`,
+    mainEntityId: productSchema ? `${pageUrl}#product` : null,
+  })
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
-      />
+      {productSchema && <JsonLd data={productSchema} />}
+      <JsonLd data={itemPageSchema} />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-16 space-y-0">
         <div className="pb-6">
-          <ProductBreadcrumbs productName={productName} collection={collectionData} />
+          <ProductBreadcrumbs
+            productName={productName}
+            productUrl={pageUrl}
+            collection={collectionData}
+          />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">

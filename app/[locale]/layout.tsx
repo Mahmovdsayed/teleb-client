@@ -6,6 +6,8 @@ import { notFound } from "next/navigation"
 import { Suspense } from "react"
 import { routing } from "@/i18n/routing"
 import { cn } from "@/lib/utils"
+import { SITE_NAME, SITE_URL } from "@/lib/seo/site"
+import { JsonLd } from "@/components/seo/JsonLd"
 import Provider from "@/provider/Provider"
 import Footer from "@/components/layout/Footer"
 import Navbar from "@/components/layout/Navbar"
@@ -31,8 +33,8 @@ const cairo = Cairo({
   display: "swap",
 })
 
-const siteUrl = "https://www.teleb-furniture.com"
-const siteName = "Teleb Furniture"
+const siteUrl = SITE_URL
+const siteName = SITE_NAME
 
 const seo = {
   en: {
@@ -137,17 +139,6 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
 }
 
-function JsonLd({ data }: { data: Record<string, unknown> }) {
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify(data).replace(/</g, "\\u003c"),
-      }}
-    />
-  )
-}
-
 export const viewport: Viewport = {
   themeColor: "#93784b",
   width: "device-width",
@@ -228,7 +219,7 @@ export default async function RootLayout({ children, params }: Props) {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: `${siteUrl}${locale === "ar" ? "/ar" : ""}/products?search={search_term_string}`,
+        urlTemplate: `${siteUrl}/${locale}/products?search={search_term_string}`,
       },
       "query-input": "required name=search_term_string",
     },

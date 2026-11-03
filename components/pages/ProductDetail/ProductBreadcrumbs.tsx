@@ -3,66 +3,43 @@
 import Link from "next/link"
 import { useLocale, useTranslations } from "next-intl"
 import { ChevronRight, Home } from "lucide-react"
+import { JsonLd } from "@/components/seo/JsonLd"
+import { buildBreadcrumbList, type BreadcrumbItem } from "@/lib/seo/schema"
+import { localePath } from "@/lib/seo/site"
 
 interface BreadcrumbsProps {
   productName: string
+  productUrl: string
   collection?: {
     id: number
     name: string
   } | null
 }
 
-export function ProductBreadcrumbs({ productName, collection }: BreadcrumbsProps) {
+export function ProductBreadcrumbs({ productName, productUrl, collection }: BreadcrumbsProps) {
   const t = useTranslations("productDetail")
   const locale = useLocale()
   const isRtl = locale === "ar"
 
-  const breadcrumbsSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: t("home"),
-        item: `${process.env.NEXT_PUBLIC_SITE_URL || ""}/${locale}`,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: t("products"),
-        item: `${process.env.NEXT_PUBLIC_SITE_URL || ""}/${locale}/products`,
-      },
-      ...(collection
-        ? [
-            {
-              "@type": "ListItem",
-              position: 3,
-              name: collection.name,
-              item: `${process.env.NEXT_PUBLIC_SITE_URL || ""}/${locale}/products?collectionId=${collection.id}`,
-            },
-            {
-              "@type": "ListItem",
-              position: 4,
-              name: productName,
-            },
-          ]
-        : [
-            {
-              "@type": "ListItem",
-              position: 3,
-              name: productName,
-            },
-          ]),
-    ],
-  }
+  const breadcrumbId = `${productUrl}#breadcrumb`
+
+  const items: BreadcrumbItem[] = [
+    { name: t("home"), path: localePath(locale) },
+    { name: t("products"), path: localePath(locale, "/products") },
+    ...(collection
+      ? [
+        {
+          name: collection.name,
+          path: localePath(locale, `/products?collectionId=${collection.id}`),
+        },
+      ]
+      : []),
+    { name: productName },
+  ]
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsSchema) }}
-      />
+      <JsonLd id="product-breadcrumbs" data={buildBreadcrumbList(items, breadcrumbId)} />
       <nav
         aria-label="Breadcrumb"
         className="flex items-center flex-wrap gap-1.5 text-xs text-muted-foreground"
