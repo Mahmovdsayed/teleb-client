@@ -82,6 +82,10 @@ export const getProductById = async (
   id: string | number,
   lang?: "ar" | "en"
 ): Promise<Product | null> => {
+  if (typeof id === "string" && !/^\d+$/.test(id.trim())) {
+    return getProductBySlug(id, lang)
+  }
+
   const response = await apiRequest<GetProductByIdResponse>(
     `${API_BASE_URL}/products/${id}`,
     {
@@ -105,8 +109,9 @@ export const getProductBySlug = async (
   slug: string,
   lang?: "ar" | "en"
 ): Promise<Product | null> => {
+  const decodedSlug = decodeURIComponent(slug).trim()
   const response = await apiRequest<GetProductByIdResponse>(
-    `${API_BASE_URL}/products/slug/${encodeURIComponent(slug)}`,
+    `${API_BASE_URL}/products/slug/${encodeURIComponent(decodedSlug)}`,
     {
       method: "GET",
       locale: lang,
@@ -121,5 +126,35 @@ export const getProductBySlug = async (
     throw new Error(message)
   }
 
-  return response.data ?? null
+  const product = response.data ?? null
+  if (product?.id && product.collectionId === undefined) {
+    try {
+      const fullProduct = await getProductById(product.id, lang)
+      if (fullProduct) {
+        return {
+          ...fullProduct,
+          ...product,
+          collectionId: fullProduct.collectionId ?? product.collectionId,
+          offerId: fullProduct.offerId ?? product.offerId,
+          createdAt: fullProduct.createdAt ?? product.createdAt,
+          updatedAt: fullProduct.updatedAt ?? product.updatedAt,
+        }
+      }
+    } catch {
+      // Continue with base product if secondary fetch fails
+    }
+  }
+
+  return product
+}
+
+export const getProductByIdOrSlug = async (
+  idOrSlug: string | number,
+  lang?: "ar" | "en"
+): Promise<Product | null> => {
+  const str = String(idOrSlug).trim()
+  if (/^\d+$/.test(str)) {
+    return getProductById(str, lang)
+  }
+  return getProductBySlug(str, lang)
 }

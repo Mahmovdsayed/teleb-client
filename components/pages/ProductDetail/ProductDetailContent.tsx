@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useLocale, useTranslations } from "next-intl"
 import { ArrowLeft, PackageSearch } from "lucide-react"
 import { useAppQuery } from "@/hooks/useAppQuery"
-import { getProductById } from "@/services/product"
+import { getProductByIdOrSlug } from "@/services/product"
 import { getCollections } from "@/services/collection"
 import { ProductBreadcrumbs } from "./ProductBreadcrumbs"
 import { ProductGallery } from "./ProductGallery"
@@ -20,11 +20,13 @@ import type { Collection } from "@/types/Collection.types"
 
 interface ProductDetailContentProps {
   initialProduct?: Product | null
+  initialCollections?: Collection[]
   productId: string
 }
 
 export function ProductDetailContent({
   initialProduct,
+  initialCollections,
   productId,
 }: ProductDetailContentProps) {
   const locale = useLocale()
@@ -33,13 +35,14 @@ export function ProductDetailContent({
 
   const { data: product, isLoading } = useAppQuery<Product | null>({
     queryKey: ["product-detail", productId, locale],
-    queryFn: () => getProductById(productId, locale as "ar" | "en"),
+    queryFn: () => getProductByIdOrSlug(productId, locale as "ar" | "en"),
     initialData: initialProduct ?? undefined,
   })
 
   const { data: collections } = useAppQuery<Collection[]>({
     queryKey: ["collections"],
     queryFn: () => getCollections(),
+    initialData: initialCollections,
   })
 
   if (isLoading && !product) {
@@ -74,7 +77,12 @@ export function ProductDetailContent({
     product.translations?.find((tr) => tr.locale === locale) ||
     product.translations?.[0]
 
-  const matchedCollection = collections?.find((c) => c.id === product.collectionId)
+  const collectionId =
+    product.collectionId != null ? Number(product.collectionId) : undefined
+
+  const matchedCollection = collections?.find(
+    (c) => Number(c.id) === collectionId
+  )
   const collectionData = matchedCollection
     ? {
       id: matchedCollection.id,
@@ -149,7 +157,7 @@ export function ProductDetailContent({
 
         <RelatedProducts
           currentProductId={product.id}
-          collectionId={product.collectionId}
+          collectionId={collectionId}
         />
       </div>
     </>

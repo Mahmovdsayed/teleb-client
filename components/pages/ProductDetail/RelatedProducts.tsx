@@ -9,7 +9,7 @@ import { ProductCardSkeleton } from "@/components/skeleton"
 
 interface RelatedProductsProps {
   currentProductId: number
-  collectionId?: number
+  collectionId?: number | string
 }
 
 export function RelatedProducts({
@@ -19,23 +19,28 @@ export function RelatedProducts({
   const t = useTranslations("productDetail")
   const locale = useLocale()
 
+  const numericCollectionId =
+    collectionId != null && !isNaN(Number(collectionId))
+      ? Number(collectionId)
+      : undefined
+
   const { data, isLoading } = useAppQuery<{ products: Product[]; total: number }>({
-    queryKey: ["related-products", collectionId, locale],
+    queryKey: ["related-products", numericCollectionId, locale],
     queryFn: () =>
       getProducts({
-        collectionId,
-        limit: 5,
+        collectionId: numericCollectionId,
+        limit: 6,
         lang: locale as "ar" | "en",
         status: "active",
       }),
-    enabled: Boolean(collectionId),
+    enabled: Boolean(numericCollectionId),
   })
 
   const relatedProducts = (data?.products ?? [])
     .filter((p) => p.id !== currentProductId)
     .slice(0, 4)
 
-  if (!collectionId) return null
+  if (!numericCollectionId) return null
   if (!isLoading && relatedProducts.length === 0) return null
 
   return (

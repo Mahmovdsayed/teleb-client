@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
   },
   cacheComponents: true,
   compiler: {
-    removeConsole: true,
+    // removeConsole: true,
   },
   partialPrefetching: true,
   turbopack: {

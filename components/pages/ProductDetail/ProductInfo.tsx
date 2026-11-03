@@ -127,7 +127,7 @@ export function ProductInfo({ product, translation, collection }: ProductInfoPro
             className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-amber-700 dark:hover:text-amber-400 transition-colors group"
           >
             <span>{collection.name}</span>
-            <ChevronRight className={`size-3.5 transition-transform group-hover:translate-x-0.5 ${isRtl ? "rotate-180" : ""}`} />
+            <ChevronRight className={`size-3.5 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 ${isRtl ? "rotate-180" : ""}`} />
           </Link>
         )}
 
