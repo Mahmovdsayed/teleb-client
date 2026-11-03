@@ -229,6 +229,7 @@ export default async function RootLayout({ children, params }: Props) {
     <html
       lang={locale}
       dir={direction}
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       className={cn("antialiased scroll-smooth", montserrat.variable, cairo.variable)}
     >
