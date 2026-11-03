@@ -1,9 +1,12 @@
 import { Suspense } from "react"
 import type { Metadata } from "next"
+import { cacheLife } from "next/cache"
 import { notFound, permanentRedirect } from "next/navigation"
+
 import { PageTransition } from "@/components/ui/PageTransition"
 import { ProductDetailContent } from "@/components/pages/ProductDetail/ProductDetailContent"
 import { ProductDetailSkeleton } from "@/components/skeleton"
+
 import { getProductById, getProductBySlug } from "@/services/product"
 import { absoluteUrl, productPath } from "@/lib/seo/site"
 
@@ -14,36 +17,56 @@ interface Props {
   }>
 }
 
-export const instant = false
-
 const NUMERIC_ID = /^\d+$/
 
-async function resolveProduct(segment: string, locale: "ar" | "en") {
-  if (NUMERIC_ID.test(segment)) return getProductById(segment, locale)
+async function getCachedProduct(
+  segment: string,
+  locale: "ar" | "en"
+) {
+  "use cache"
+
+  cacheLife("hours")
+
+  if (NUMERIC_ID.test(segment)) {
+    return getProductById(segment, locale)
+  }
+
   return getProductBySlug(decodeURIComponent(segment), locale)
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata> {
   const { locale, id } = await params
 
   try {
-    const product = await resolveProduct(id, locale)
+    const product = await getCachedProduct(id, locale)
+
     if (!product) {
       return {
-        title: locale === "ar" ? "المنتج غير موجود" : "Product Not Found",
+        title:
+          locale === "ar"
+            ? "المنتج غير موجود"
+            : "Product Not Found",
       }
     }
 
     const translation =
-      product.translations?.find((tr) => tr.locale === locale) ||
-      product.translations?.[0]
+      product.translations?.find(
+        (tr) => tr.locale === locale
+      ) || product.translations?.[0]
 
-    const title = translation?.metaTitle || `${translation?.name || product.slug}`
+    const title =
+      translation?.metaTitle ||
+      `${translation?.name || product.slug}`
+
     const description =
       translation?.metaDescription ||
       translation?.smallDescription ||
       translation?.description ||
-      (locale === "ar" ? "أثاث منزلي عصري فاخر" : "Luxury modern furniture")
+      (locale === "ar"
+        ? "أثاث منزلي عصري فاخر"
+        : "Luxury modern furniture")
 
     const mainImage =
       product.images?.find((img) => img.isMain)?.url ||
@@ -51,6 +74,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     const path = productPath(product)
     const canonical = absoluteUrl(`/${locale}${path}`)
+
     const alternates = {
       canonical,
       languages: {
@@ -65,14 +89,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       keywords: translation?.metaKeywords ?? undefined,
       alternates,
+
       openGraph: {
         title,
         description,
         type: "article",
         url: canonical,
         locale: locale === "ar" ? "ar_EG" : "en_US",
-        images: mainImage ? [{ url: mainImage, alt: translation?.name }] : undefined,
+        images: mainImage
+          ? [{ url: mainImage, alt: translation?.name }]
+          : undefined,
       },
+
       twitter: {
         card: "summary_large_image",
         title,
@@ -82,34 +110,49 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   } catch {
     return {
-      title: locale === "ar" ? "تفاصيل المنتج" : "Product Details",
+      title:
+        locale === "ar"
+          ? "تفاصيل المنتج"
+          : "Product Details",
     }
   }
 }
 
-export default async function ProductDetailPage({ params }: Props) {
+async function ProductDetailLoader({
+  params,
+}: {
+  params: Props["params"]
+}) {
   const { id, locale } = await params
-
   let product = null
+
   try {
-    product = await resolveProduct(id, locale)
+    product = await getCachedProduct(id, locale)
   } catch {
     product = null
   }
 
-  if (!product) {
-    notFound()
-  }
-
+  if (!product) notFound()
   const canonicalPath = `/${locale}${productPath(product)}`
+
   if (canonicalPath !== `/${locale}/products/${id}`) {
     permanentRedirect(canonicalPath)
   }
 
   return (
+    <ProductDetailContent
+      initialProduct={product}
+      productId={id}
+    />
+  )
+}
+
+
+export default function ProductDetailPage({ params }: Props) {
+  return (
     <PageTransition>
       <Suspense fallback={<ProductDetailSkeleton />}>
-        <ProductDetailContent initialProduct={product} productId={id} />
+        <ProductDetailLoader params={params} />
       </Suspense>
     </PageTransition>
   )
