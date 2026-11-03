@@ -81,7 +81,7 @@ export default function ProductCard({ product, className = "", priority = false 
             </div>
 
             <div className="mt-2.5">
-                <h3 className="text-xs md:text-sm font-semibold text-foreground line-clamp-1 transition-colors duration-200 group-hover:text-primary">
+                <h3 className="text-xs md:text-sm font-semibold tracking-tight text-foreground line-clamp-1 transition-colors duration-200 group-hover:text-primary">
                     {name}
                 </h3>
                 {description && (
