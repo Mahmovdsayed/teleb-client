@@ -137,7 +137,7 @@ export default function CollectionsCarousel({ collections: initialCollections }:
                     <span className="text-[11px] md:text-xs font-semibold tracking-tight uppercase text-amber-700 dark:text-amber-400">
                         {t("featuredSubtitle")}
                     </span>
-                    <h2 className="text-lg md:text-xl lg:text-2xl font-semibold tracking-tight text-foreground mt-0.5">
+                    <h2 className="text-base md:text-xl lg:text-2xl font-semibold tracking-tight text-foreground mt-0.5">
                         {t("featuredCollections")}
                     </h2>
                 </div>

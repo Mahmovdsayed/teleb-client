@@ -46,7 +46,7 @@ export function RelatedProducts({
   return (
     <section className="mt-16 pt-12 border-t border-border/50">
       <div className="mb-8">
-        <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
+        <h2 className="text-base sm:text-2xl font-semibold tracking-tight text-foreground">
           {t("relatedProducts")}
         </h2>
         <p className="mt-1 text-xs md:text-sm tracking-tight text-muted-foreground">

@@ -57,7 +57,7 @@ export default function BestSellers({ initialProducts }: BestSellersProps) {
                         <span className="text-[11px] md:text-xs font-semibold tracking-tight uppercase text-amber-700 dark:text-amber-400">
                             {t("bestSellersSubtitle")}
                         </span>
-                        <h2 className="text-lg md:text-xl lg:text-2xl font-semibold tracking-tight text-foreground mt-0.5">
+                        <h2 className="text-base md:text-xl lg:text-2xl font-semibold tracking-tight text-foreground mt-0.5">
                             {t("bestSellers")}
                         </h2>
                     </div>
